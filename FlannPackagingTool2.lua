@@ -15,7 +15,7 @@
 -- ****************************************************************** --
 
 local thisName = "FlannPackagingTool"
-local tmpFile = "fpt_tempfile"
+local tmpfile = "fpt_tempfile"
 
 -- URL Table for installable programs
 local progs = {
@@ -115,7 +115,7 @@ local function installFile(filename, source, programname, update)
 		print("Installing '"..filename.."'")
 	end
 	
-	if downloadFile(tmpFile, source) then
+	if downloadFile(tmpfile, source) then
 		if fs.exists(filename) then
 			print("Deleting old file '"..filename.."'")
 			shell.run("rm "..filename)
