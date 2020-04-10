@@ -1,5 +1,3 @@
--- Install: pastebin get 4vaK9JYN botania
-
 collected = 0
 status = ""
 version = "1.0"
