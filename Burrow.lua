@@ -5,9 +5,9 @@
 -- **                                                           ** --
 -- **    This program is a more advanced tunneling program 3*3  ** --
 -- **                                                           ** --
--- **    Change Log:                                            ** --
--- **       8th Apr 2014: [v0.0.1] Rerelease                    ** --
+-- **    Changelog:                                            ** --
 -- **      23rd Jun 2019: [v0.0.3] Added adjustable height      ** --
+-- **       8th Apr 2014: [v0.0.1] Rerelease                    ** --
 -- **                                                           ** --
 -- *************************************************************** --
 -- **    Todo:                                                  ** --
