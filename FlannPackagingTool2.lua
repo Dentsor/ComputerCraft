@@ -103,6 +103,7 @@ local function downloadFile(filename, source)
 		return true
 	else
 		return false
+	end
 end
 
 local function installFile(filename, source, programname, update)
