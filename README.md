@@ -1,6 +1,6 @@
-== ComputerCraft programs
+## ComputerCraft programs
 
-=== Installation
+### Installation
 Scripts can be installed on an ingame computer using the wget-command:
 
 ```
