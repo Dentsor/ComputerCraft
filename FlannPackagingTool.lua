@@ -5,6 +5,8 @@
 -- **                                                              ** --
 -- **    Simplifies installation and updating of certain scripts   ** --
 -- **                                                              ** --
+-- ****************************************************************** --
+-- **                                                              ** --
 -- **    Change Log:                                               ** --
 -- **      10th Apr 2020: [v0.0.5] Redoing for GitHub              ** --
 -- **      09th Apr 2020: [v0.0.4] Added additional programs       ** --
@@ -13,9 +15,17 @@
 -- **      20th Aug 2019: [v0.0.1] Initial Release                 ** --
 -- **                                                              ** --
 -- ****************************************************************** --
+-- **                                                              ** --
+-- **    Credits:                                                  ** --
+-- **      https://github.com/eric-wieser/computercraft-github     ** --
+-- **      http://dkolf.de/src/dkjson-lua.fsl/home                 ** --
+-- **                                                              ** --
+-- **                                                              ** --
+-- ****************************************************************** --
 
 local thisName = "FlannPackagingTool"
 local tmpfile = "fpt_tempfile"
+local github = dofile('apis/github')
 
 -- URL Table for installable programs
 local progs = {
@@ -43,6 +53,47 @@ local function printHelp()
 	print(" * fpt rm/remove <scriptname>")
 	print(" * fpt upg/upgrade")
 end
+
+
+-- Takes in a list of files and returns the files with correct extention, without extention
+local function trimFileExtentions( files, fileExt )
+    local returnArray = {}
+    local counter = 1
+
+    for key, val in pairs(files) do
+        needleLength = string.len(fileExt) -- Length to remove from end
+        path = item:fullPath() -- Filename with folder/location
+        pathLength = string.len(path) -- Length of path
+        extention  = string.sub(path, pathLength - needleLength +1) -- +1 to skip last letter before .
+
+        if extention == fileExt then
+            returnArray[counter] = string.sub(path, 1, pathLength - needleLength) -- Add to array
+            counter = counter + 1 -- Iterate
+        end
+    end
+
+    return returnArray
+end
+
+-- Get a list of all files in GitHub repo
+local function getFilesFromGit( user, repo, branch, auth )
+	-- Example: getFilesFromGit('Dentsor', 'ComputerCraft', 'master', nil)
+    local repo = github.repo(user, repo, auth)
+    local tree = repo:tree(treeName)
+
+    local files = {}
+    local counter = 1
+
+    for item in tree:iter() do
+        files[counter] = item:fullPath()
+        counter = counter + 1
+    end
+
+    return files
+end
+
+--trimFileExtentions(getFilesFromGit('Dentsor', 'ComputerCraft', 'master', nil), '.lua')
+
 
 -- Check if table contains value
 local function hasValue (tab, val)
