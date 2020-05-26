@@ -1,6 +1,3 @@
--- CC_ApiMsg
--- xnet/api/msg
- 
 -- This determines the importance of the message
 msgLvl = { DEBUG=0, INFO=1, WARNING=2, ERROR=3, FATAL=4 }
  

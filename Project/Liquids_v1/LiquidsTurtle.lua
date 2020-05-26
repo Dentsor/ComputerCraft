@@ -1,4 +1,4 @@
--- CC_TurtleLiquids
+-- CC_LiquidsTurtle
 
 -- ***** Settings *****
 controllerComputerLabel = "XnetLiquidsController"

@@ -1,5 +1,5 @@
--- CC_ApiButton
--- xnet/api/button
+-- Original by Direwolf20 : https://www.youtube.com/watch?v=1nuMDtmnEjg
+-- Extended by Dentsor
 
 -- TODO
 -- 1: update button[name]["active"] to button[name]["color"]
@@ -41,7 +41,7 @@ function funcName()
 end
        
 function fillTable()
-   setTable("ButtonText", funcName, 5, 25, 4, 8)
+   setTable("ButtonText", funcName, "", 5, 25, 4, 8)
 end    
  
 function fill(text, color, bData)
