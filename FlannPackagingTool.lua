@@ -1,11 +1,12 @@
 -- ****************************************************************** --
 -- **                                                              ** --
--- **    Flann Packaging Tool (fpt) v0.0.4 by Dentsor              ** --
+-- **    Flann Packaging Tool (fpt) v0.0.5 by Dentsor              ** --
 -- **    ---------------------------------------------             ** --
 -- **                                                              ** --
 -- **    Simplifies installation and updating of certain scripts   ** --
 -- **                                                              ** --
 -- **    Change Log:                                               ** --
+-- **      10th Apr 2020: [v0.0.5] Redoing for GitHub              ** --
 -- **      09th Apr 2020: [v0.0.4] Added additional programs       ** --
 -- **      21th Aug 2019: [v0.0.3] Added confirmation to upgrades  ** --
 -- **      20th Aug 2019: [v0.0.2] Added Upgrade command           ** --
@@ -18,16 +19,13 @@ local tmpfile = "fpt_tempfile"
 
 -- URL Table for installable programs
 local progs = {
-	ClearArea = {"ca", "p2xQ7sr8"},
-	Burrow = {"burrow", "tPMYAHNd"},
-	Attack = {"attack", "70eNyATn"},
-	OreQuarry = {"quarry", "TFLmxSGr"},
-	GuiMenu = {"gui_menu", "4hvR9ba4"},
-	SetupLiquids = {"liquidsSetup", "kyur9SjU"},
-	ApiTurtleMV = {"apiTurtle", "NtaLPLr7"},
-	ApiMessaging = {"apiMessage", "XWs4tnft"},
-	FlannPackagingTool = {"fpt", "xjd38bPN"},
-	ApiButton = {"apiButton", "3Fp9pfQy"}
+	ClearArea = {"ca", "https://raw.githubusercontent.com/Dentsor/ComputerCraft/master/ClearArea.lua"},
+	Burrow = {"burrow", "https://raw.githubusercontent.com/Dentsor/ComputerCraft/master/Burrow.lua"},
+	Attack = {"attack", "https://raw.githubusercontent.com/Dentsor/ComputerCraft/master/Attack.lua"},
+	OreQuarry = {"quarry", "https://raw.githubusercontent.com/Dentsor/ComputerCraft/master/OreQuarry.lua"},
+	GuiMenu = {"gui_menu", "https://raw.githubusercontent.com/Dentsor/ComputerCraft/master/Menu.lua"},
+	FlannPackagingTool = {"fpt", "https://raw.githubusercontent.com/Dentsor/ComputerCraft/master/FlannPackagingTool.lua"},
+	ApiButton = {"apiButton", "https://raw.githubusercontent.com/Dentsor/ComputerCraft/master/ApiButton.lua"}
 	}
 
 local keys = { ESC=1, ONE=2, TWO=3, THREE=4, FOUR=5, FIVE=6, SIX=7, SEVEN=8, EIGHT=9, NINE=10, ZERO=11, NULL=11, MINUS=12, EQUALS=13, EQUAL=13, BACKSPACE=14, BACK=14, TAB=15, Q=16, W=17, E=18, R=19, T=20, Y=21, U=22, I=23, O=24, P=25, BRACKETLEFT=26, BRACKETRIGHT=27, ENTER=28, NUMENTER=28, CONTROLLEFT=29, CTRLLEFT=29, A=30, S=31, D=32, F=33, G=34, H=35, J=36, K=37, L=38, SEMICOLON=39, APOSTROPHE=40, PARAGRAPH=41, SHIFTLEFT=42, BACKSLASH=43, Z=44, X=45, C=46, V=47, B=48, N=49, M=50, COMMA=51, FULLSTOP=52, PERIOD=52, FORWARDSLASH=53, SLASH=53, SHIFTRIGHT=54, NUMSTAR=55, ALTLEFT=56, SPACE=57, SPACEBAR=57, CAPS=58, CAPSLOCK=58, F1=59, F2=60, F3=61, F4=62, F5=63, F6=64, F7=65, F8=66, F9=67, F10=68, NUMLOCK=69,SCROLLOCK=70, SCROLLOCK=70, NUM7=71, NUM8=72, NUM9=73, NUMMINUS=74, NUM4=75, NUM5=76, NUM6=77, NUMPLUS=78, NUM1=79, NUM2=80, NUM3=81, NUM0=82, NUMCOMMA=83, F11=87, F12=88, CONTROLRIGHT=157, CTRLRIGHT=157, NUMSLASH=181, PRINTSCREEN=183, PRNTSCRN=183, ALTRIGHT=184, PAUSE=197, BREAK=197, PAUSEBREAK=197, HOME=199, UP=200, PGUP=201, PAGEUP=201, LEFT=203, RIGHT=205, END=207, DOWN=208, PGDOWN=209, PAGEDOWN=209, INSERT=210, INS=210, DELETE=211, DEL=211, WINLEFT=219, WINRIGHT=220, MENU=221, RMB=221 }
@@ -98,17 +96,26 @@ local function playerProceed(str, keyArr)
 	end
 end
 
-local function installPaste(filename, pastecode, programname, update)
-	if programname ~= nil and update ~= nil and update == 1 then
-		print("Updating "..programname..", from pastebin#"..pastecode.." and save as '"..filename.."'")
-	elseif programname ~= nil then
-		print("Installing "..programname..", from pastebin#"..pastecode.." and save as '"..filename.."'")
+local function downloadFile(filename, source)
+	shell.run("wget "..source.." "..filename)
+
+	if fs.exists(filename) then
+		return true
 	else
-		print("Installing '"..filename.."' from pastebin#"..pastecode)
+		return false
 	end
-	shell.run("pastebin get "..pastecode.." "..tmpfile)
+end
+
+local function installFile(filename, source, programname, update)
+	if programname ~= nil and update ~= nil and update == 1 then
+		print("Updating "..programname)
+	elseif programname ~= nil then
+		print("Installing "..programname.." as "..filename)
+	else
+		print("Installing '"..filename.."'")
+	end
 	
-	if fs.exists(tmpfile) then
+	if downloadFile(tmpfile, source) then
 		if fs.exists(filename) then
 			print("Deleting old file '"..filename.."'")
 			shell.run("rm "..filename)
@@ -135,7 +142,7 @@ local function installProg(programname, filename, update)
 			u = update
 		end
 		
-		installPaste(file, progs[programname][2], programname, u)
+		installFile(file, progs[programname][2], programname, u)
 	else
 		print("Error: Program '"..programname.."' not found!")
 	end
@@ -222,3 +229,4 @@ elseif #args > 0 then
 	-- Script should return before here, else help should be provided.
 	printHelp()
 end
+
